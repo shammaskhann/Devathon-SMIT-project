@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "288477001608",
+    "project_id": "devathon-smit-project-ed263",
+    "storage_bucket": "devathon-smit-project-ed263.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:288477001608:android:d7dd7baf069255821b6c3d",
+        "android_client_info": {
+          "package_name": "com.example.devathon_project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCBQ-3lAyep_-6J1U76XssorI0pr6LgQmg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
