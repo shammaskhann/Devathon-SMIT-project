@@ -41,6 +41,7 @@ dependencies:
   cloud_firestore: ^4.12.1
   shimmer: ^3.0.0
   flutter_svg: ^2.0.8
+  intl: ^0.18.1
 
 dev_dependencies:
   flutter_test:
