@@ -1,7 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:devathon_project/viewmodel/AssigmentViewModel.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+
+import 'package:devathon_project/viewmodel/AssigmentViewModel.dart';
 
 class AssignmentScreen extends StatefulWidget {
   const AssignmentScreen({super.key});
@@ -19,8 +20,8 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
             centerTitle: true, title: const Text('Scheduled Appointment')),
         body: FutureBuilder(
             future: assignmentViewModel.getAllAppointment(),
-            builder: (context,AsyncSnapshot snapshot) {
-              if(snapshot.connectionState==ConnectionState.waiting){
+            builder: (context, AsyncSnapshot snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(child: CircularProgressIndicator());
               }
               if (snapshot.hasData) {
@@ -30,8 +31,10 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
                       return Card(
                         child: ListTile(
                           title: Text(snapshot.data.docs[index]['DoctorName']),
-                          subtitle: Text(formatTimestamp(snapshot.data.docs[index]['date'])),
-                          trailing: Text(snapshot.data.docs[index]['time'].toString()),
+                          subtitle: Text(formatTimestamp(
+                              snapshot.data.docs[index]['date'])),
+                          trailing: Text(
+                              snapshot.data.docs[index]['time'].toString()),
                         ),
                       );
                     });
@@ -42,16 +45,17 @@ class _AssignmentScreenState extends State<AssignmentScreen> {
               }
             }));
   }
+
   String formatTimestamp(Timestamp timestamp) {
-  // Convert the Firebase timestamp to a DateTime
-  DateTime date = timestamp.toDate();
+    // Convert the Firebase timestamp to a DateTime
+    DateTime date = timestamp.toDate();
 
-  // Define the date format
-  DateFormat dateFormat = DateFormat('dd/MM/yyyy');
+    // Define the date format
+    DateFormat dateFormat = DateFormat('dd/MM/yyyy');
 
-  // Format the date as a string in the desired format
-  String formattedDate = dateFormat.format(date);
+    // Format the date as a string in the desired format
+    String formattedDate = dateFormat.format(date);
 
-  return formattedDate;
-}
+    return formattedDate;
+  }
 }
