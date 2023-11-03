@@ -2,12 +2,14 @@ import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:devathon_project/resources/Image.dart';
+import 'package:devathon_project/view/AssignmetnScreen.dart';
 import 'package:devathon_project/view/CategoryDoctorScreen.dart';
 import 'package:devathon_project/view/DoctorViewScree.dart';
 import 'package:devathon_project/widgets/CustomCategoryButton.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:shimmer/shimmer.dart';
 
 import '../resources/Color.dart';
 import '../viewmodel/HomeViewModel.dart';
@@ -32,18 +34,64 @@ class _HomeScreenState extends State<HomeScreen> {
         drawer: Drawer(
           child: Column(
             children: [
-              const UserAccountsDrawerHeader(
-                accountName: Text('Person Name'),
-                accountEmail: Text(''),
-                currentAccountPicture: CircleAvatar(
+              UserAccountsDrawerHeader(
+                accountName: FutureBuilder(
+                  future: homeViewModel.getName(), 
+                  builder:((context, snapshot) {
+                    if(snapshot.connectionState==ConnectionState.waiting){
+                      return Shimmer(
+                        gradient: LinearGradient(
+                          colors: [Colors.grey, Colors.grey[200]!],
+                        ),
+                        child: Container(
+                          height: 20,
+                          width: 100,
+                          color: Colors.grey,
+                        ),
+                      );
+                    }
+                    if(snapshot.hasData){
+                      return Text(snapshot.data.toString());
+                    }
+                    else{
+                      return const Text('No Name');
+                    }
+                  })),
+                accountEmail: FutureBuilder(
+                  future: homeViewModel.getEmail(), 
+                  builder:((context, snapshot) {
+                    if(snapshot.connectionState==ConnectionState.waiting){
+                      return Shimmer(
+                        gradient: LinearGradient(
+                          colors: [Colors.grey, Colors.grey[200]!],
+                        ),
+                        child: Container(
+                          height: 20,
+                          width: 100,
+                          color: Colors.grey,
+                        ),
+                      );
+                    }
+                    if(snapshot.hasData){
+                      return Text(snapshot.data.toString());
+                    }
+                    else{
+                      return const Text('No Email');
+                    }
+                  })),
+                currentAccountPicture: const CircleAvatar(
                   child: Icon(Icons.person),
                 ),
               ),
               ListTile(
                 leading: const Icon(Icons.settings),
-                title: const Text('Settings'),
+                title: const Text('Schedule Appointment'),
                 onTap: () {
                   // Do something when the user taps on the Settings item
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const AssignmentScreen()));
                 },
               ),
               ListTile(
@@ -198,14 +246,14 @@ class _HomeScreenState extends State<HomeScreen> {
                                 MaterialPageRoute(
                                     builder: (context) =>
                                         const DoctorCateegoryScreen(
-                                            Category: "General")));
+                                            Category: "General Dentist")));
                           },
                         ),
                       ],
                     ),
                   ),
                   SizedBox(
-                    height: MediaQuery.of(context).size.height * 0.4,
+                    height: MediaQuery.of(context).size.height * 0.395,
                     child: FutureBuilder(
                         future: homeViewModel.getBestRatedDoctor(),
                         builder: (context, AsyncSnapshot snapshot) {

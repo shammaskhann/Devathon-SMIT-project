@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:devathon_project/view/HomeScreen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -43,4 +45,28 @@ class DoctorViewModel {
           MaterialPageRoute(builder: ((context) => const HomeScreen())));
     });
   }
+  checkForDuplicateAppointment(String docName,
+    DateTime? selectedDate,
+    TimeOfDay? selectedTime,
+    String id,
+    BuildContext context) async {
+  final user = auth.currentUser;
+  final FirebaseFirestore firestore = FirebaseFirestore.instance;
+  final CollectionReference<Map<String, dynamic>> doctorCollection =
+      firestore.collection('doctors');
+  final DocumentReference<Map<String, dynamic>> doctorDocument =
+      doctorCollection.doc(id);
+  final CollectionReference<Map<String, dynamic>> appointmentCollection =
+      doctorDocument.collection('appointments');
+  final querySnapshot = await appointmentCollection
+      .where('date', isEqualTo: selectedDate)
+      .where('time', isEqualTo: selectedTime!.format(context))
+      .get();
+      log(querySnapshot.docs.toString());
+  if (querySnapshot.docs.isEmpty) {
+    bookAppointment(docName, selectedDate, selectedTime, id, context);
+  } else {
+    Utils.toastMessage('Appointment Already Booked');
+  }
+}
 }

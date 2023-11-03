@@ -18,6 +18,7 @@ class MyApp extends StatelessWidget {
     final auth = FirebaseAuth.instance;
 
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
         title: 'Flutter Demo',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFFC8E3FF)),

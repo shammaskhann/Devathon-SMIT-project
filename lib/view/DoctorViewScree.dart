@@ -34,7 +34,7 @@ class DoctorViewScreen extends StatefulWidget {
 
 class _DoctorViewScreenState extends State<DoctorViewScreen> {
   DoctorViewModel doctorViewModel = DoctorViewModel();
-  final loading = false;
+  var loading = false;
   DateTime? selectedDate;
   TimeOfDay? selectedTime;
   @override
@@ -50,7 +50,7 @@ class _DoctorViewScreenState extends State<DoctorViewScreen> {
             height: 100,
             width: 100,
             decoration: BoxDecoration(
-                color: Colors.red,
+                color: AppColors.white,
                 borderRadius: BorderRadius.circular(25),
                 image: DecorationImage(
                     fit: BoxFit.fill,
@@ -233,10 +233,16 @@ class _DoctorViewScreenState extends State<DoctorViewScreen> {
                 ),
               ),
               CustomButton(
-                onTap: () {
+                onTap: () async{
                   if (selectedDate != null && selectedTime != null) {
-                    doctorViewModel.bookAppointment(widget.name, selectedDate,
-                        selectedTime, widget.id, context);
+                    setState(() {
+                      loading = true;
+                    });
+                    await doctorViewModel.checkForDuplicateAppointment(widget.name, selectedDate, selectedTime, widget.id, context).then((value) {
+                      setState(() {
+                        loading = false;
+                      });
+                    });
                   } else {
                     Utils.toastMessage('Select Date & Time');
                   }

@@ -9,7 +9,7 @@ class AssignmentViewModel {
     return _db
         .collection('users')
         .doc(user!.uid)
-        .collection('appointments')
+        .collection('appointments').orderBy('date',descending: true)
         .get();
   }
 }
